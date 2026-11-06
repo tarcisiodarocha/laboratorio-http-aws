@@ -1,0 +1,26 @@
+{
+	admin off
+	skip_install_trust
+	auto_https disable_redirects
+	servers :8441 {
+		protocols h1
+	}
+	servers :8442 {
+		protocols h1 h2
+	}
+	servers :8443 {
+		protocols h1 h2 h3
+	}
+}
+
+(conteudo) {
+	root * {$SITE_ROOT:/srv}
+	header Cache-Control "no-store"
+	file_server
+	log
+}
+
+https://{$LAB_HOST:lab.test}:8441, https://{$LAB_HOST:lab.test}:8442, https://{$LAB_HOST:lab.test}:8443 {
+	tls internal
+	import conteudo
+}

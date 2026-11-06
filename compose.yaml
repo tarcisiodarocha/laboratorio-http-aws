@@ -1,0 +1,20 @@
+name: laboratorio-http-aws
+services:
+  caddy:
+    image: caddy:2.11.9-alpine
+    restart: unless-stopped
+    environment:
+      LAB_HOST: ${LAB_HOST:-lab.test}
+    ports:
+      - "8441:8441/tcp"
+      - "8442:8442/tcp"
+      - "8443:8443/tcp"
+      - "8443:8443/udp"
+    volumes:
+      - ./${CADDYFILE:-Caddyfile}:/etc/caddy/Caddyfile:ro
+      - ./site:/srv:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  caddy_data:
+  caddy_config:
